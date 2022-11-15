@@ -17,6 +17,11 @@
 #Динамика изучает причины движения по той или иной траектории или если нужно по какой, то то какие силы должны быть приложены. 2й закон ньютона. F=ma 
 
 #Движение в СК из точки 0,5 в точку 0, -5 по прямой
+#Движение происходит в модельной среде VREP
+#разбитой на дискретной
+#Мною выбрана среда VREP в этой среде поле делится на условные квадраты
+#Я реализую движение робата из точки 0,5 в точку 0 -5
+########################################################################Изображение данного видиния в виде данных лидара, почему не ровно
 import math
 import rospy
 import geometry_msgs.msg
@@ -195,7 +200,7 @@ def subscriber_top_laser(lidar:geometry_msgs.msg.Vector3):
         
         Map2D[Y_Point][X_Point]=-1
         
-        
+    
     pass
 def PrepareGlobals():
     global StartPoseSaved
@@ -268,6 +273,8 @@ def CurrentPath():
     else:
         HasPointFromPathfinder=False
     
+    #Disable Pathfinding
+    #HasPointFromPathfinder=False
     print()
     #Path
     '''for y in range(MapSize-1,-1,-1):
