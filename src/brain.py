@@ -344,7 +344,7 @@ def ShowMapImage():
             img[Target_X_Pose][Target_Y_Pose][:]=0
             img[Target_X_Pose][Target_Y_Pose][2]=1'''
             
-            
+            #img2=img.transpose()
             cv2.imshow("map",img)
             #print("Show image")
             cv2.waitKey(1)
