@@ -217,10 +217,10 @@ def WorkMovement(printLog=False):
     elif(abs(AngleFromForwardToPoint)>0.3):
         print("Rotation")
         if(abs(AngleFromForwardToPoint)>1):
-            twist.angular.z=max(abs(AngleFromForwardToPoint),0.1)*Math2.sign(AngleFromForwardToPoint)
+            twist.angular.z=max(abs(AngleFromForwardToPoint),0.1)*np.sign(AngleFromForwardToPoint)
             #print("FAST from angle="+str(currentGlobalForward)+" toAngle="+str(VectorToPoint))
         else:
-            twist.angular.z=max(abs(AngleFromForwardToPoint),0.01)*Math2.sign(AngleFromForwardToPoint)
+            twist.angular.z=max(abs(AngleFromForwardToPoint),0.01)*np.sign(AngleFromForwardToPoint)
             #print("SLOW")
     else:
         print("Forward")

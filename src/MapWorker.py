@@ -190,35 +190,20 @@ class MapWorker:
         #print("FindPath="+str(Path))
         return Path
     def findLower(self,WorkMap,from_X,from_Y,NextID,MapSize):
-        '''if(from_X-1>0):
+
+        if(from_X-1>0 ):
             if(WorkMap[from_Y][from_X-1]==NextID):
                 #print(from_Y,from_X-1)
                 return (from_Y,from_X-1)
-        if(from_X+1<MapSize):
+        if(from_X+1<MapSize  ):
             if(WorkMap[from_Y][from_X+1]==NextID):
                 #print(from_Y,from_X+1)
                 return (from_Y,from_X+1)
-        if(from_Y-1>=0):
+        if(from_Y-1>=0  ):
             if(WorkMap[from_Y-1][from_X]==NextID):
                 #print(from_Y-1,from_X)
                 return (from_Y-1,from_X)
-        if(from_Y+1<MapSize):
-            if(WorkMap[from_Y+1][from_X]==NextID):
-                #print(from_Y+1,from_X)
-                return (from_Y+1,from_X)'''
-        if(from_X-1>0 and self.checkIsGoodPoint(WorkMap,from_Y,from_X-1)):
-            if(WorkMap[from_Y][from_X-1]==NextID):
-                #print(from_Y,from_X-1)
-                return (from_Y,from_X-1)
-        if(from_X+1<MapSize  and self.checkIsGoodPoint(WorkMap,from_Y,from_X+1)):
-            if(WorkMap[from_Y][from_X+1]==NextID):
-                #print(from_Y,from_X+1)
-                return (from_Y,from_X+1)
-        if(from_Y-1>=0  and self.checkIsGoodPoint(WorkMap,from_Y-1,from_X)):
-            if(WorkMap[from_Y-1][from_X]==NextID):
-                #print(from_Y-1,from_X)
-                return (from_Y-1,from_X)
-        if(from_Y+1<MapSize and self.checkIsGoodPoint(WorkMap,from_Y+1,from_X)):
+        if(from_Y+1<MapSize ):
             if(WorkMap[from_Y+1][from_X]==NextID):
                 #print(from_Y+1,from_X)
                 return (from_Y+1,from_X)
@@ -226,33 +211,7 @@ class MapWorker:
         #WorkMap[from_Y][from_X]=0
         print("Target not found "+str(NextID))
         return []
-        data=""
-        for y in range(MapSize-1,-1,-1):
-            #print(WorkMap[MapSize-1-y])
-            word=""
-            for x in range(MapSize):
-                word+=str(WorkMap[y][x])+"\t"
-                
-            data+=(word+"\n")
-        
-        f = open("error.txt","w")
-        f.write(data)
-        f.close()
-        
-        pass
-    def checkIsGoodPoint(self,WorkMap,x,y):
-        return True
-        Distance=3
-        xMin=int(max(0,x-Distance))
-        xMax=int(min(self.PathfinderMapSize,x+Distance))
-        yMin=int(max(0,y-Distance))
-        yMax=int(min(self.PathfinderMapSize,y+Distance))
-        #print(type(WorkMap))
-        #array=np.array(WorkMap)
-        #rint(WorkMap[xMin:xMax,yMin:yMax])
-        #return True
-        #print(np.min(np.min(WorkMap[xMin:xMax,yMin:yMax])))
-        return np.min(np.min(WorkMap[xMin:xMax,yMin:yMax]))>=0
+
     #Помечает карту волнами
     def MarkMap(self,WorkMap,from_X,from_Y,to_X,to_Y):
         WorkMap[from_Y][from_X]=1

@@ -6,39 +6,11 @@ import geometry_msgs.msg
 import math
 from datetime import datetime
 from threading import Thread
-import sys
+from Vector3 import *
 StartPoseSaved:bool=False
 CurrentPose:geometry_msgs.msg.Pose2D=geometry_msgs.msg.Pose2D()
 
 #https://stackoverflow.com/questions/22753160/how-do-i-accept-input-from-arrow-keys-or-accept-directional-input/22755221#22755221
-
-class Vector3(geometry_msgs.msg.Vector3):
-    def __init__(self,x:float=0,y:float=0,z:float=0):
-        self.x=x
-        self.y=y
-        self.z=z
-    def __sub__(self,other):
-        if(type(other)==Vector3):
-            return Vector3(self.x-other.x,self.y-other.y,self.z-other.z)
-    def __add__(self,other):
-        if(type(other)==Vector3):
-            return Vector3(self.x+other.x,self.y+other.y,self.z+other.z)
-    def __mul__(self,other):
-        if(type(other)==Vector3):
-            return self.x*other.x+self.y*other.y+self.z*other.z
-        elif(type(other)==float):
-            return Vector3(self.x*other,self.y*other,self.z*other)
-    def __str__(self) -> str:
-        return "x:"+str(self.x)+" y:"+str(self.y)+" z:"+str(self.z)
-    def Module(self):
-        return float(math.sqrt((self.x)**2+(self.y)**2+(self.z)**2))
-    
-    def normalize(self):
-        dist=self.Module()
-        if(dist!=0):
-            return Vector3(self.x/dist,self.y/dist,self.z/dist)
-        else:
-            return self
 
 class _Getch:
    """Gets a single character from standard input.  Does not echo to the
@@ -99,13 +71,11 @@ def KeyReader():
         #keyTime=(now-datetime(2000,1,1)).microseconds()
         keyTime=getNowTime()
 
-def DistanceVector3(fromPosition:Vector3,toPosition:Vector3=Vector3()):
-    return (fromPosition-toPosition).Module()
 MovePoints=[]
 def CalculateDistanceForAllPoints(points):
     dist=0
     for id in range(1,len(points)):
-        dist+=DistanceVector3(points[id-1],points[id])
+        dist+=Vector3.DistanceVector3(points[id-1],points[id])
     return dist*2
 def Worker():
     global twist
@@ -124,7 +94,7 @@ def Worker():
             if(len(MovePoints)==0):
                 MovePoints.append(pose)
             else:
-                if(DistanceVector3(MovePoints[len(MovePoints)-1],pose)>0.01):
+                if(Vector3.DistanceVector3(MovePoints[len(MovePoints)-1],pose)>0.01):
                     MovePoints.append(pose)
         d=CalculateDistanceForAllPoints(MovePoints)
         print(d)
