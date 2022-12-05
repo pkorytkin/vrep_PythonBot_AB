@@ -1,23 +1,16 @@
-import math
-
-from numpy import char
 import rospy
 import geometry_msgs.msg
-import math
 from datetime import datetime
 from threading import Thread
 from Vector3 import *
 StartPoseSaved:bool=False
 CurrentPose:geometry_msgs.msg.Pose2D=geometry_msgs.msg.Pose2D()
-
 #https://stackoverflow.com/questions/22753160/how-do-i-accept-input-from-arrow-keys-or-accept-directional-input/22755221#22755221
-
 class _Getch:
    """Gets a single character from standard input.  Does not echo to the
 screen."""
    def __init__(self):
       self.impl = _GetchUnix()
-
    def __call__(self):# return self.impl()
       charlist = []
       counter = 0
@@ -38,15 +31,12 @@ screen."""
             return 'r-arr'
          if charlist[2] == 'd' or charlist[2] == 'D':
             return 'l-arr'
-
       if(len(charlist)>0):
             return charlist[0]
       return ''
-
 class _GetchUnix:
    def __init__(self):
       import tty, sys
-
    def __call__(self):
       import sys, tty, termios
       fd = sys.stdin.fileno()
@@ -66,11 +56,7 @@ def KeyReader():
     global keyTime
     while not(rospy.is_shutdown()):
         key=getch()
-        #print(key)
-        #now = datetime.now()
-        #keyTime=(now-datetime(2000,1,1)).microseconds()
         keyTime=getNowTime()
-
 MovePoints=[]
 def CalculateDistanceForAllPoints(points):
     dist=0
@@ -84,10 +70,7 @@ def Worker():
     global keyTime
     keyTime=0
     key=""
-    
     twist=geometry_msgs.msg.Twist()
-    
-    
     while not(rospy.is_shutdown()):
         pose=CurrentPosition()
         if(pose.x!=0 or pose.y!=0 or pose.z!=0):
@@ -98,17 +81,9 @@ def Worker():
                     MovePoints.append(pose)
         d=CalculateDistanceForAllPoints(MovePoints)
         print(d)
-        #print('Reading a char:')
-        #print(repr(readchar.readchar()))
-        #print('Reading a key:')
-        #print(getch())
-        
         twist.linear.x=0
         twist.angular.z=0
-        #print(keyTime)
         timeNow=getNowTime()
-        #now = datetime.now()
-        #timeNow=(now-datetime(2000,1,1)).microseconds()
         linearSpeed=5
         if(timeNow-keyTime<0.1):
             if(key=='u-arr'):
@@ -119,15 +94,10 @@ def Worker():
                 twist.angular.z=1
             elif(key=='r-arr'):
                 twist.angular.z=-1
-        #print(key)
-        #break
         twist.linear.x*=linearSpeed
         cmd_velPub.publish(twist)
-        #r.sleep()
-
 def subscriber_pose(pose:geometry_msgs.msg.Pose2D):
     global CurrentPose
-    #rospy.loginfo(pose)
     #Сохранение стартовой позиции
     global StartPoseSaved
     global StartPose
@@ -136,9 +106,7 @@ def subscriber_pose(pose:geometry_msgs.msg.Pose2D):
         StartPoseSaved=True
     #Сохранение нынешней позиции
     CurrentPose=pose
-    #print("Saved CurrentPose="+str(pose))
     pass
- 
 def CurrentPosition():
     #z=CurrentPose.z
     global CurrentPose
@@ -149,22 +117,16 @@ def PrepareWorkers():
     global poseSub
     global r
     global keyThread
-    #cmd_velPub=rospy.Publisher("cmd_vel",geometry_msgs.msg.Twist,tcp_nodelay=True,queue_size=1)
     cmd_velPub=rospy.Publisher("/cmd_vel",geometry_msgs.msg.Twist,tcp_nodelay=True,queue_size=1)
     poseSub=rospy.Subscriber("pose",geometry_msgs.msg.Pose2D,tcp_nodelay=True,queue_size=1,callback=subscriber_pose)
-    
-    
     rospy.init_node("brain")
     keyThread = Thread(target=KeyReader)
     keyThread.start()
-    r=rospy.Rate(60)#60hz
-
+    r=rospy.Rate(60)
 if __name__ == '__main__':
     try:
-        
         PrepareWorkers()
         #Заготавливаем точки маршрута
-        
         Worker()
     except rospy.ROSInterruptException:
         pass

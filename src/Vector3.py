@@ -19,11 +19,11 @@ class Vector3(geometry_msgs.msg.Vector3):
             return Vector3(self.x*other,self.y*other,self.z*other)
         else:
             print("TYPE NOT FOUND "+str(type(other)))
+            raise Exception("Type NOT FOUND"+str(type(other)))
     def __str__(self) -> str:
         return "x:"+str(self.x)+" y:"+str(self.y)+" z:"+str(self.z)
     def Module(self):
         return float(math.sqrt((self.x)**2+(self.y)**2+(self.z)**2))
-    
     def normalize(self):
         dist=self.Module()
         if(dist!=0):
@@ -41,5 +41,4 @@ class Vector3(geometry_msgs.msg.Vector3):
         return fromVector.x*toVector.y-fromVector.y*toVector.x
     @staticmethod
     def Angle2D(fromVector,toVector):
-        #https://www.wikihow.com/Find-the-Angle-Between-Two-Vectors
-        return math.atan2(fromVector.x*toVector.y-fromVector.y*toVector.x,fromVector.x*toVector.x+fromVector.y*toVector.y);
+        return math.atan2(fromVector.x*toVector.y-fromVector.y*toVector.x,fromVector.x*toVector.x+fromVector.y*toVector.y)
