@@ -106,6 +106,8 @@ def PrepareGlobals():
     print("Node ready")
 def CurrentTargetPoint():
     global TargetPointFromPathfinder
+    
+    #HasPointFromPathfinder=False
     if(HasPointFromPathfinder):
         CurrentPos=CurrentPosition()
         bestDistance=100000

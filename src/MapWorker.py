@@ -44,8 +44,8 @@ class MapWorker:
                     for y_i in range(0,MapScale):
                         for x_i in range(0,MapScale):
                             PathfinderMap[y*MapScale+y_i][x*MapScale+x_i]=self.GlobalMap2D[y][x]
-        ErodeCount=9
-        self.ErodeMap(PathfinderMap,ErodeCount)
+        DilateCount=9
+        self.DilateMap(PathfinderMap,DilateCount)
         
         for y_i in range(0,MapScale):
             for x_i in range(0,MapScale):
@@ -65,8 +65,8 @@ class MapWorker:
         #Disable Pathfinding
         #HasPointFromPathfinder=False
         return (HasPointFromPathfinder,TargetPointFromPathfinder,Path)
-    def ErodeMap(self,SourceMap,ErodeCount=1):
-        for id in range(ErodeCount):
+    def DilateMap(self,SourceMap,DilateCount=1):
+        for id in range(DilateCount):
             mapCopy=np.copy(SourceMap)
             for x in range(self.PathfinderMapSize):
                 for y in range(self.PathfinderMapSize):
